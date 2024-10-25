@@ -1,0 +1,6 @@
+@tl2_tp5_2024_Daggam_HostAddress = http://localhost:5237
+
+GET {{tl2_tp5_2024_Daggam_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
