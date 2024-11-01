@@ -1,9 +1,12 @@
 namespace ProductoRepositoryNamespace;
 using Microsoft.Data.Sqlite;
+using TiendaNamespace;
+
 interface ProductoRepository
 {
     bool crearProducto(string descripcion, int precio);
     bool modificarProducto(int idProducto, string descripcion, int precio);
+    List<Producto>? obtenerProductos();
 }
 
 class SQLiteProductoRepository : ProductoRepository
@@ -28,8 +31,8 @@ class SQLiteProductoRepository : ProductoRepository
         catch (SqliteException e)
         {
             Console.WriteLine(e.Message);
-            return false;
         }
+        return false;
     }
     public bool modificarProducto(int idProducto,string descripcion, int precio){
         try{
@@ -47,7 +50,31 @@ class SQLiteProductoRepository : ProductoRepository
             return true;
         }catch(SqliteException e){
             Console.WriteLine(e.Message);
-            return false;
         }
+        return false;
+    }
+
+    public List<Producto>? obtenerProductos()
+    {
+        try{
+            List<Producto> productos = new List<Producto>();
+            using(SqliteConnection connection = new SqliteConnection(connectionString)){
+                connection.Open();
+                string queryString = "SELECT * FROM Productos";
+                var command = new SqliteCommand(queryString,connection);
+                using(var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        productos.Add( new Producto(reader.GetInt32(0),reader.GetString(1),reader.GetInt32(2)));
+                    }
+                }
+                connection.Close();
+            } 
+            return productos;
+        }catch(SqliteException e){
+            Console.WriteLine(e.Message);
+        }
+        return null;
     }
 }
