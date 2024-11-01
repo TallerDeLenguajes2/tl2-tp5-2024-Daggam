@@ -36,4 +36,9 @@ public class ProductosController : ControllerBase
         if(producto == null) return NotFound();
         return Ok(producto);
     }   
+    [HttpDelete("{id}")]
+    public ActionResult eliminarProducto(int id){
+        if(!productoRepositorio.eliminarProducto(id)) return BadRequest();
+        return NoContent();
+    }
 }

@@ -8,6 +8,8 @@ interface ProductoRepository
     bool modificarProducto(int idProducto, string descripcion, int precio);
     List<Producto>? obtenerProductos();
     Producto? obtenerProducto(int id);
+
+    bool eliminarProducto(int id);
 }
 
 class SQLiteProductoRepository : ProductoRepository
@@ -101,5 +103,25 @@ class SQLiteProductoRepository : ProductoRepository
             Console.WriteLine(e.Message);
         }
         return producto;
+    }
+
+    public bool eliminarProducto(int id)
+    {
+        try
+        {
+            using(var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                string queryString = "DELETE FROM Productos WHERE idProducto = @idProducto;";
+                var command = new SqliteCommand(queryString,connection);
+                command.Parameters.AddWithValue("@idProducto",id);
+                int filasAfectadas = command.ExecuteNonQuery();
+                connection.Close();
+            }
+            return true;
+        }catch(SqliteException e){
+            Console.WriteLine(e.Message);
+        }
+        return false;
     }
 }
