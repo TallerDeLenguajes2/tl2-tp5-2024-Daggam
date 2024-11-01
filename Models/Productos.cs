@@ -1,6 +1,6 @@
 namespace TiendaNamespace;
 
-public class Productos
+public class Producto
 {
     int idProducto;
     string descripcion;

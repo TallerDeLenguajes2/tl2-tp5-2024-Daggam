@@ -2,9 +2,9 @@ namespace TiendaNamespace;
 
 public class PresupuestoDetalle
 {
-    Productos producto;
+    Producto producto;
     int cantidad;
 
-    public Productos Producto { get => producto; }
+    public Producto Producto { get => producto; }
     public int Cantidad { get => cantidad; set => cantidad = value; }
 }
