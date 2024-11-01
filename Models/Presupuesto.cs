@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TiendaNamespace;
 
 public class Presupuesto
@@ -8,12 +10,10 @@ public class Presupuesto
 
     public int IdPresupuesto { get => idPresupuesto; }
     public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value; }
-    public List<PresupuestoDetalle> Detalle { get => detalle; }
-
-    public Presupuesto()
-    {
-        detalle = new List<PresupuestoDetalle>();
-    }
+    // public List<PresupuestoDetalle> Detalle { get => detalle;}
+    public List<PresupuestoDetalle> Detalle {get;} = new List<PresupuestoDetalle>();
+    
+    
     public void MontoPresupuesto()
     {
 
