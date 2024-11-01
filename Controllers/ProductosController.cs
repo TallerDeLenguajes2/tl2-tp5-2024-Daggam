@@ -30,4 +30,10 @@ public class ProductosController : ControllerBase
         if(productos==null) return NotFound();
         return Ok(productos);
     }
+    [HttpGet("{id}")]
+    public ActionResult<Producto?> obtenerProducto(int id){
+        Producto? producto = productoRepositorio.obtenerProducto(id);
+        if(producto == null) return NotFound();
+        return Ok(producto);
+    }   
 }

@@ -7,6 +7,7 @@ interface ProductoRepository
     bool crearProducto(string descripcion, int precio);
     bool modificarProducto(int idProducto, string descripcion, int precio);
     List<Producto>? obtenerProductos();
+    Producto? obtenerProducto(int id);
 }
 
 class SQLiteProductoRepository : ProductoRepository
@@ -76,5 +77,29 @@ class SQLiteProductoRepository : ProductoRepository
             Console.WriteLine(e.Message);
         }
         return null;
+    }
+
+    public Producto? obtenerProducto(int id){
+        Producto? producto=null;
+        try{
+            using(var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                string queryString = "SELECT * FROM Productos WHERE idProducto = @idProducto;";
+                var command = new SqliteCommand(queryString,connection);
+                command.Parameters.AddWithValue("@idProducto",id);
+                using(var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        producto = new Producto(reader.GetInt32(0),reader.GetString(1),reader.GetInt32(2));
+                    }
+                }
+                connection.Close();
+            }
+        }catch(SqliteException e){
+            Console.WriteLine(e.Message);
+        }
+        return producto;
     }
 }
