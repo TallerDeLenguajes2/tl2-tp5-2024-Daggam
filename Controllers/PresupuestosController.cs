@@ -24,4 +24,11 @@ public class PresupuestosController:ControllerBase{
         if(presupuestos==null) return BadRequest();
         return Ok(presupuestos);
     }
+
+    [HttpGet("{id}")]
+    public ActionResult<Presupuesto> obtenerPresupuesto(int id){
+        Presupuesto? presupuesto = presupuestoRepository.obtenerPresupuesto(id);
+        if(presupuesto==null) return NotFound();
+        return Ok(presupuesto);
+    }
 }
