@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+//using System.Text.Json.Serialization;
 
 namespace TiendaNamespace;
 
@@ -10,9 +10,17 @@ public class Presupuesto
 
     public int IdPresupuesto { get => idPresupuesto; }
     public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value; }
-    // public List<PresupuestoDetalle> Detalle { get => detalle;}
-    public List<PresupuestoDetalle> Detalle {get;} = new List<PresupuestoDetalle>();
-    
+    public List<PresupuestoDetalle> Detalle {get => detalle;}
+
+    //[JsonConstructor]
+    public Presupuesto(){
+        detalle = new List<PresupuestoDetalle>();
+    }
+    public Presupuesto(int idPresupuesto, string nombreDestinatario, List<PresupuestoDetalle> detalle){
+        this.idPresupuesto = idPresupuesto;
+        this.nombreDestinatario = nombreDestinatario;
+        this.detalle = detalle;
+    } 
     
     public void MontoPresupuesto()
     {

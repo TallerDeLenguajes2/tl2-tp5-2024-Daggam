@@ -17,4 +17,11 @@ public class PresupuestosController:ControllerBase{
         if(!presupuestoRepository.crearPresupuesto(presupuesto.NombreDestinatario)) return BadRequest();
         return Created();
     }
+
+    [HttpGet()]
+    public ActionResult<List<Presupuesto>> obtenerPresupuestos(){
+        List<Presupuesto>? presupuestos = presupuestoRepository.obtenerPresupuestos();
+        if(presupuestos==null) return BadRequest();
+        return Ok(presupuestos);
+    }
 }
