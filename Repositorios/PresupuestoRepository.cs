@@ -7,9 +7,10 @@ using TiendaNamespace;
 
 interface PresupuestoRepository
 {
-    bool crearPresupuesto(string nombreDestinatario);
-    List<Presupuesto>? obtenerPresupuestos();
-    Presupuesto? obtenerPresupuesto(int id);
+    bool CrearPresupuesto(string nombreDestinatario);
+    List<Presupuesto>? ObtenerPresupuestos();
+    Presupuesto? ObtenerPresupuesto(int id);
+    bool AgregarDetallePresupuesto(int idPresupuesto, int idProducto, int cantidad);
     // bool modificarProducto(int idProducto, string descripcion, int precio);
     // List<Producto>? obtenerProductos();
     // Producto? obtenerProducto(int id);
@@ -20,7 +21,7 @@ interface PresupuestoRepository
 class SQLitePresupuestoRepository : PresupuestoRepository
 {
     string connectionString = @"Data Source=db\Tienda.db;Cache=Shared";
-    public bool crearPresupuesto(string nombreDestinatario)
+    public bool CrearPresupuesto(string nombreDestinatario)
     {
         try
         {
@@ -43,7 +44,7 @@ class SQLitePresupuestoRepository : PresupuestoRepository
         return false;
     }
     
-    public List<Presupuesto>? obtenerPresupuestos()
+    public List<Presupuesto>? ObtenerPresupuestos()
     {
         try{
             List<Presupuesto> presupuestos = new List<Presupuesto>();
@@ -87,7 +88,7 @@ class SQLitePresupuestoRepository : PresupuestoRepository
         return null;
     }
 
-    public Presupuesto? obtenerPresupuesto(int id){
+    public Presupuesto? ObtenerPresupuesto(int id){
         Presupuesto? presupuesto=null;
         try{
             using(var connection = new SqliteConnection(connectionString)){
@@ -121,5 +122,24 @@ class SQLitePresupuestoRepository : PresupuestoRepository
             Console.WriteLine(e.Message);
         }
         return presupuesto;
+    }
+    public bool AgregarDetallePresupuesto(int idPresupuesto,int idProducto,int cantidad)
+    {
+        try{
+            using(var connection = new SqliteConnection(connectionString)){
+                connection.Open();
+                string querySelect = "INSERT INTO PresupuestosDetalle (idPresupuesto, idProducto, cantidad) VALUES (@idPresupuesto, @idProducto, @cantidad);";
+                var command = new SqliteCommand(querySelect,connection);
+                command.Parameters.AddWithValue("@idPresupuesto",idPresupuesto);
+                command.Parameters.AddWithValue("@idProducto",idProducto);
+                command.Parameters.AddWithValue("@cantidad",cantidad);
+                int filasAfectadas = command.ExecuteNonQuery();
+                connection.Close();
+            }
+            return true;
+        }catch(SqliteException e){
+            Console.WriteLine(e.Message);
+        }
+        return false;
     }
 }
