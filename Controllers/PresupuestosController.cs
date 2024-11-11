@@ -36,4 +36,9 @@ public class PresupuestosController:ControllerBase{
         if(!presupuestoRepository.AgregarDetallePresupuesto(idPresupuesto,idProducto,cantidad)) return BadRequest();
         return Created();
     } 
+    [HttpDelete("{id}")]
+    public ActionResult eliminarPresupuesto(int id){
+        if(!presupuestoRepository.EliminarPresupuesto(id)) return BadRequest();
+        return NoContent();
+    }
 }
